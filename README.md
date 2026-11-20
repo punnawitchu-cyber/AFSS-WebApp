@@ -11,6 +11,12 @@ Final Project: ระบบดับเพลิงอัตโนมัติ
 - ระบบแจ้งเตือนเมื่อพบเหตุผิดปกติ
 - ควบคุมระบบดับเพลิง
 - บันทึกประวัติเหตุการณ์
+##Demo Login
+
+สำหรับทดลองใช้งาน Web Application
+
+Username: admin
+Password: 1234
 
 ## Technologies
 - ESP32
