@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFSS Monitoring System</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: #e5e7eb;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* LOGIN */
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top right, #1e3a5f, transparent 40%),
+    #0b1120;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  background: #172033;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #29364c;
+  box-shadow: 0 20px 50px rgba(0,0,0,.3);
+}
+
+.logo {
+  width: 65px;
+  height: 65px;
+  border-radius: 15px;
+  background: #f97316;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.login-box h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.login-box p {
+  color: #94a3b8;
+  margin-bottom: 25px;
+}
+
+.login-box label {
+  display: block;
+  margin: 15px 0 8px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
+  border-radius: 8px;
+  outline: none;
+}
+
+.login-box input:focus {
+  border-color: #f97316;
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  background: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background: #ea580c;
+}
+
+.login-error {
+  color: #f87171;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+/* APP */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background: #111827;
+  border-right: 1px solid #263247;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.brand-icon {
+  width: 45px;
+  height: 45px;
+  background: #f97316;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+}
+
+.brand h2 {
+  font-size: 18px;
+}
+
+.brand small {
+  color: #94a3b8;
+}
+
+.nav-label {
+  font-size: 12px;
+  color: #64748b;
+  margin: 15px 0;
+  letter-spacing: 1px;
+}
+
+.nav-btn {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 13px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.nav-btn:hover {
+  background: #1e293b;
+  color: white;
+}
+
+.nav-btn.active {
+  background: #7c2d12;
+  color: #fdba74;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid #263247;
+  padding-top: 20px;
+}
+
+.logout-btn {
+  color: #f87171;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  padding: 20px 30px;
+  background: #111827;
+  border-bottom: 1px solid #263247;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar h2 {
+  font-size: 22px;
+}
+
+.topbar small {
+  color: #94a3b8;
+}
+
+.content {
+  padding: 30px;
+  max-width: 1500px;
+  margin: auto;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.section-title {
+  margin-bottom: 20px;
+}
+
+.section-title h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.section-title p {
+  color: #94a3b8;
+}
+
+/* CARDS */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.card {
+  background: #172033;
+  border: 1px solid #29364c;
+  border-radius: 15px;
+  padding: 22px;
+}
+
+.card-label {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.card-value {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 18px 0 10px;
+}
+
+.card-footer {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.orange {
+  color: #fb923c;
+}
+
+.green {
+  color: #4ade80;
+}
+
+.red {
+  color: #f87171;
+}
+
+.blue {
+  color: #60a5fa;
+}
+
+.yellow {
+  color: #facc15;
+}
+
+.status-banner {
+  background: #14532d;
+  border: 1px solid #166534;
+  border-radius: 15px;
+  padding: 22px;
+  margin-bottom: 25px;
+}
+
+.status-banner.alarm {
+  background: #7f1d1d;
+  border-color: #991b1b;
+}
+
+.status-banner h2 {
+  margin-bottom: 8px;
+}
+
+.status-banner p {
+  color: #d1d5db;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 18px;
+  margin-top: 25px;
+}
+
+.panel {
+  background: #172033;
+  border: 1px solid #29364c;
+  border-radius: 15px;
+  padding: 22px;
+}
+
+.panel h3 {
+  margin-bottom: 18px;
+}
+
+.sensor-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #29364c;
+}
+
+.sensor-row:last-child {
+  border-bottom: none;
+}
+
+.sensor-name {
+  color: #cbd5e1;
+}
+
+.sensor-value {
+  font-weight: bold;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.badge-green {
+  background: #14532d;
+  color: #86efac;
+}
+
+.badge-red {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.badge-yellow {
+  background: #713f12;
+  color: #fde68a;
+}
+
+.badge-blue {
+  background: #1e3a8a;
+  color: #bfdbfe;
+}
+
+/* BUTTONS */
+
+.btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin: 5px 5px 5px 0;
+}
+
+.btn-orange {
+  background: #f97316;
+  color: white;
+}
+
+.btn-orange:hover {
+  background: #ea580c;
+}
+
+.btn-red {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-green {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-blue {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-gray {
+  background: #334155;
+  color: white;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.setting-item {
+  margin-bottom: 25px;
+}
+
+.setting-item label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.setting-item input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: white;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+th, td {
+  padding: 15px;
+  border-bottom: 1px solid #29364c;
+  text-align: left;
+}
+
+th {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+td {
+  font-size: 14px;
+}
+
+.empty {
+  color: #64748b;
+  padding: 25px;
+  text-align: center;
+}
+
+.log-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.log-item {
+  padding: 15px;
+  border-bottom: 1px solid #29364c;
+  font-size: 14px;
+}
+
+.log-time {
+  color: #64748b;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.footer {
+  color: #64748b;
+  text-align: center;
+  padding: 30px;
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 750px) {
+  .sidebar {
+    width: 70px;
+    padding: 12px;
+  }
+
+  .brand {
+    justify-content: center;
+  }
+
+  .brand-text,
+  .nav-label,
+  .nav-text,
+  .sidebar-bottom small {
+    display: none;
+  }
+
+  .nav-btn {
+    justify-content: center;
+    padding: 14px 5px;
+    font-size: 20px;
+  }
+
+  .topbar {
+    padding: 15px;
+  }
+
+  .content {
+    padding: 15px;
+  }
+
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .card-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 450px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .login-box {
+    padding: 25px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div id="loginScreen" class="login-screen">
+
+  <div class="login-box">
+
+    <div class="logo">🔥</div>
+
+    <h1>AFSS System</h1>
+
+    <p>Automatic Fire Suppression System</p>
+
+    <form onsubmit="login(event)">
+
+      <label>Username</label>
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter username"
+        required
+      >
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter password"
+        required
+      >
+
+      <button type="submit" class="login-btn">
+        Login to Dashboard
+      </button>
+
+    </form>
+
+    <div id="loginError" class="login-error"></div>
+
+    <p style="margin-top:20px;font-size:12px;">
+      Prototype Login System
+    </p>
+
+  </div>
+
+</div>
+
+<!-- APP -->
+
+<div id="appScreen" class="app hidden">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="brand">
+
+      <div class="brand-icon">🔥</div>
+
+      <div class="brand-text">
+        <h2>AFSS</h2>
+        <small>Monitoring System</small>
+      </div>
+
+    </div>
+
+    <div class="nav-label">MAIN MENU</div>
+
+    <button class="nav-btn active"
+      onclick="showPage('dashboard',this)">
+      <span>📊</span>
+      <span class="nav-text">Dashboard</span>
+    </button>
+
+    <button class="nav-btn"
+      onclick="showPage('sensors',this)">
+      <span>📡</span>
+      <span class="nav-text">Sensor Monitoring</span>
+    </button>
+
+    <button class="nav-btn"
+      onclick="showPage('history',this)">
+      <span>📋</span>
+      <span class="nav-text">Event History</span>
+    </button>
+
+    <button class="nav-btn"
+      onclick="showPage('control',this)">
+      <span>🛡️</span>
+      <span class="nav-text">System Control</span>
+    </button>
+
+    <button class="nav-btn"
+      onclick="showPage('settings',this)">
+      <span>⚙️</span>
+      <span class="nav-text">Settings</span>
+    </button>
+
+    <div class="sidebar-bottom">
+
+      <button class="nav-btn logout-btn"
+        onclick="logout()">
+        <span>🚪</span>
+        <span class="nav-text">Logout</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <div class="main">
+
+    <div class="topbar">
+
+      <div>
+        <h2 id="pageTitle">Dashboard</h2>
+        <small>AFSS Prototype Monitoring</small>
+      </div>
+
+      <div>
+        <span class="badge badge-green" id="topStatus">
+          ● NORMAL
+        </span>
+      </div>
+
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+
+      <section id="dashboard" class="page active">
+
+        <div id="dashboardBanner" class="status-banner">
+
+          <h2 id="dashboardStatus">
+            🟢 System Normal
+          </h2>
+
+          <p id="dashboardDetail">
+            ระบบกำลังเฝ้าระวังสถานะจำลอง
+          </p>
+
+        </div>
+
+        <div class="section-title">
+          <h2>System Overview</h2>
+          <p>ภาพรวมสถานะของระบบดับเพลิงอัตโนมัติ</p>
+        </div>
+
+        <div class="grid">
+
+          <div class="card">
+            <div class="card-label">Smoke Sensor</div>
+            <div class="card-value orange" id="dashSmoke">20</div>
+            <div class="card-footer">Smoke Level</div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Temperature</div>
+            <div class="card-value orange" id="dashTemp">30 °C</div>
+            <div class="card-footer">Temperature Sensor</div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Flame Sensor</div>
+            <div class="card-value green" id="dashFlame">CLEAR</div>
+            <div class="card-footer">Flame Detection</div>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Fire Alarm</div>
+            <div class="card-value green" id="dashAlarm">OFF</div>
+            <div class="card-footer">Alarm Status</div>
+          </div>
+
+        </div>
+
+        <div class="two-column">
+
+          <div class="panel">
+
+            <h3>Sensor Summary</h3>
+
+            <div class="sensor-row">
+              <span class="sensor-name">Smoke Level</span>
+              <span id="summarySmoke" class="sensor-value">20</span>
+            </div>
+
+            <div class="sensor-row">
+              <span class="sensor-name">Temperature</span>
+              <span id="summaryTemp" class="sensor-value">30 °C</span>
+            </div>
+
+            <div class="sensor-row">
+              <span class="sensor-name">Flame Detection</span>
+              <span id="summaryFlame" class="badge badge-green">CLEAR</span>
+            </div>
+
+            <div class="sensor-row">
+              <span class="sensor-name">Suppression System</span>
+              <span id="summarySuppression" class="badge badge-green">OFF</span>
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <h3>Quick Actions</h3>
+
+            <p style="color:#94a3b8;margin-bottom:20px;">
+              ทดสอบการทำงานของระบบจำลอง
+            </p>
+
+            <button class="btn btn-red"
+              onclick="simulateFire()">
+              🔥 Simulate Fire
+            </button>
+
+            <button class="btn btn-green"
+              onclick="resetSystem()">
+              ↻ Reset System
+            </button>
+
+            <button class="btn btn-blue"
+              onclick="manualActivate()">
+              ⚡ Manual Activation
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SENSORS -->
+
+      <section id="sensors" class="page">
+
+        <div class="section-title">
+
+          <h2>Sensor Monitoring</h2>
+
+          <p>
+            ตรวจสอบข้อมูลเซนเซอร์ภายในระบบ
+          </p>
+
+        </div>
+
+        <div class="grid">
+
+          <div class="card">
+            <div class="card-label">Smoke Sensor</div>
+            <div class="card-value orange" id="sensorSmoke">20</div>
+            <span id="smokeBadge" class="badge badge-green">
+              NORMAL
+            </span>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Temperature Sensor</div>
+            <div class="card-value orange" id="sensorTemp">30 °C</div>
+            <span id="tempBadge" class="badge badge-green">
+              NORMAL
+            </span>
+          </div>
+
+          <div class="card">
+            <div class="card-label">Flame Sensor</div>
+            <div class="card-value green" id="sensorFlame">CLEAR</div>
+            <span id="flameBadge" class="badge badge-green">
+              NORMAL
+            </span>
+          </div>
+
+          <div class="card">
+            <div class="card-label">System Process</div>
+            <div class="card-value blue" id="sensorProcess">Monitoring</div>
+            <span class="badge badge-blue">
+              ACTIVE
+            </span>
+          </div>
+
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+
+          <h3>Sensor Information</h3>
+
+          <div class="sensor-row">
+            <span class="sensor-name">Smoke Detection</span>
+            <span id="smokeInfo">Normal</span>
+          </div>
+
+          <div class="sensor-row">
+            <span class="sensor-name">Temperature Detection</span>
+            <span id="tempInfo">Normal</span>
+          </div>
+
+          <div class="sensor-row">
+            <span class="sensor-name">Flame Detection</span>
+            <span id="flameInfo">No Flame</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- HISTORY -->
+
+      <section id="history" class="page">
+
+        <div class="section-title">
+
+          <h2>Event History</h2>
+
+          <p>
+            ประวัติการทำงานและการแจ้งเตือนของระบบ
+          </p>
+
+        </div>
+
+        <div class="panel">
+
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+
+            <h3>Activity Log</h3>
+
+            <button class="btn btn-gray"
+              onclick="clearHistory()">
+              Clear History
+            </button>
+
+          </div>
+
+          <div id="eventHistory" class="log-list">
+
+            <div class="empty">
+              No event history
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- CONTROL -->
+
+      <section id="control" class="page">
+
+        <div class="section-title">
+
+          <h2>System Control</h2>
+
+          <p>
+            ควบคุมระบบจำลองด้วยตนเอง
+          </p>
+
+        </div>
+
+        <div class="status-banner" id="controlBanner">
+
+          <h2 id="controlStatus">
+            🟢 System Standby
+          </h2>
+
+          <p>
+            ระบบควบคุมจำลอง
+          </p>
+
+        </div>
+
+        <div class="grid">
+
+          <div class="card">
+
+            <div class="card-label">Fire Alarm</div>
+
+            <div class="card-value green" id="controlAlarm">
+              OFF
+            </div>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-label">Suppression System</div>
+
+            <div class="card-value green" id="controlSuppression">
+              OFF
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+
+          <h3>Manual Commands</h3>
+
+          <p style="color:#94a3b8;margin-bottom:20px;">
+            คำสั่งต่อไปนี้เป็นการทดสอบระบบจำลองเท่านั้น
+          </p>
+
+          <button class="btn btn-red"
+            onclick="manualActivate()">
+            Activate System
+          </button>
+
+          <button class="btn btn-green"
+            onclick="resetSystem()">
+            Reset System
+          </button>
+
+          <button class="btn btn-orange"
+            onclick="simulateFire()">
+            Simulate Fire
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- SETTINGS -->
+
+      <section id="settings" class="page">
+
+        <div class="section-title">
+
+          <h2>Settings</h2>
+
+          <p>
+            ตั้งค่าเกณฑ์ตรวจจับในระบบจำลอง
+          </p>
+
+        </div>
+
+        <div class="panel">
+
+          <h3>Detection Thresholds</h3>
+
+          <div class="setting-item">
+
+            <label for="tempThreshold">
+              Temperature Threshold (°C)
+            </label>
+
+            <input type="number"
+              id="tempThreshold"
+              value="60"
+              min="1"
+              max="500">
+
+          </div>
+
+          <div class="setting-item">
+
+            <label for="smokeThreshold">
+              Smoke Threshold
+            </label>
+
+            <input type="number"
+              id="smokeThreshold"
+              value="200"
+              min="1"
+              max="10000">
+
+          </div>
+
+          <button class="btn btn-orange"
+            onclick="saveSettings()">
+            Save Settings
+          </button>
+
+        </div>
+
+        <div class="panel" style="margin-top:20px;">
+
+          <h3>System Information</h3>
+
+          <div class="sensor-row">
+            <span class="sensor-name">System</span>
+            <span>AFSS Prototype</span>
+          </div>
+
+          <div class="sensor-row">
+            <span class="sensor-name">Version</span>
+            <span>1.0</span>
+          </div>
+
+          <div class="sensor-row">
+            <span class="sensor-name">Mode</span>
+            <span class="badge badge-blue">Simulation</span>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+    <div class="footer">
+      AFSS Prototype | Simulation Only
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+/* LOGIN */
+
+const DEMO_USER = "admin";
+const DEMO_PASS = "1234";
+
+function login(event) {
+
+  event.preventDefault();
+
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  if (user === DEMO_USER && pass === DEMO_PASS) {
+
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("appScreen").classList.remove("hidden");
+    document.getElementById("loginError").innerText = "";
+
+    addEvent("Login สำเร็จ");
+    showPage("dashboard");
+
+  } else {
+
+    document.getElementById("loginError").innerText =
+      "Username หรือ Password ไม่ถูกต้อง";
+
+  }
+
+}
+
+function logout() {
+
+  document.getElementById("appScreen").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+
+  addEvent("Logout");
+
+}
+
+/* NAVIGATION */
+
+const pageTitles = {
+  dashboard: "Dashboard",
+  sensors: "Sensor Monitoring",
+  history: "Event History",
+  control: "System Control",
+  settings: "Settings"
+};
+
+function showPage(pageId, button) {
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  } else {
+    const buttons = document.querySelectorAll(".nav-btn");
+    buttons[0].classList.add("active");
+  }
+
+  document.getElementById("pageTitle").innerText =
+    pageTitles[pageId] || pageId;
+
+}
+
+/* STATE */
+
+let smokeValue = 20;
+let temperature = 30;
+let flameDetected = false;
+let alarmOn = false;
+let suppressionOn = false;
+
+let tempThreshold = 60;
+let smokeThreshold = 200;
+
+let events = [];
+
+function updateUI() {
+
+  /* DASHBOARD */
+
+  document.getElementById("dashSmoke").innerText = smokeValue;
+  document.getElementById("dashTemp").innerText = temperature + " °C";
+
+  document.getElementById("dashFlame").innerText =
+    flameDetected ? "DETECTED" : "CLEAR";
+
+  document.getElementById("dashFlame").className =
+    "card-value " + (flameDetected ? "red" : "green");
+
+  document.getElementById("dashAlarm").innerText =
+    alarmOn ? "ON" : "OFF";
+
+  document.getElementById("dashAlarm").className =
+    "card-value " + (alarmOn ? "red" : "green");
+
+  document.getElementById("summarySmoke").innerText = smokeValue;
+  document.getElementById("summaryTemp").innerText = temperature + " °C";
+
+  document.getElementById("summaryFlame").innerText =
+    flameDetected ? "DETECTED" : "CLEAR";
+
+  document.getElementById("summaryFlame").className =
+    "badge " + (flameDetected ? "badge-red" : "badge-green");
+
+  document.getElementById("summarySuppression").innerText =
+    suppressionOn ? "ON" : "OFF";
+
+  document.getElementById("summarySuppression").className =
+    "badge " + (suppressionOn ? "badge-red" : "badge-green");
+
+  /* SENSOR PAGE */
+
+  document.getElementById("sensorSmoke").innerText = smokeValue;
+  document.getElementById("sensorTemp").innerText = temperature + " °C";
+
+  document.getElementById("sensorFlame").innerText =
+    flameDetected ? "DETECTED" : "CLEAR";
+
+  document.getElementById("sensorFlame").className =
+    "card-value " + (flameDetected ? "red" : "green");
+
+  document.getElementById("sensorProcess").innerText =
+    alarmOn ? "Fire Detected" : "Monitoring";
+
+  document.getElementById("smokeBadge").innerText =
+    smokeValue >= smokeThreshold ? "HIGH" : "NORMAL";
+
+  document.getElementById("smokeBadge").className =
+    "badge " + (smokeValue >= smokeThreshold ? "badge-red" : "badge-green");
+
+  document.getElementById("tempBadge").innerText =
+    temperature >= tempThreshold ? "HIGH" : "NORMAL";
+
+  document.getElementById("tempBadge").className =
+    "badge " + (temperature >= tempThreshold ? "badge-red" : "badge-green");
+
+  document.getElementById("flameBadge").innerText =
+    flameDetected ? "DETECTED" : "NORMAL";
+
+  document.getElementById("flameBadge").className =
+    "badge " + (flameDetected ? "badge-red" : "badge-green");
+
+  document.getElementById("smokeInfo").innerText =
+    smokeValue >= smokeThreshold ? "Abnormal" : "Normal";
+
+  document.getElementById("tempInfo").innerText =
+    temperature >= tempThreshold ? "Abnormal" : "Normal";
+
+  document.getElementById("flameInfo").innerText =
+    flameDetected ? "Flame Detected" : "No Flame";
+
+  /* CONTROL */
+
+  document.getElementById("controlAlarm").innerText =
+    alarmOn ? "ON" : "OFF";
+
+  document.getElementById("controlAlarm").className =
+    "card-value " + (alarmOn ? "red" : "green");
+
+  document.getElementById("controlSuppression").innerText =
+    suppressionOn ? "ON" : "OFF";
+
+  document.getElementById("controlSuppression").className =
+    "card-value " + (suppressionOn ? "red" : "green");
+
+  document.getElementById("controlStatus").innerText =
+    alarmOn ? "⚠ System Activated" : "🟢 System Standby";
+
+  document.getElementById("controlBanner").className =
+    "status-banner " + (alarmOn ? "alarm" : "");
+
+  /* STATUS */
+
+  const danger = alarmOn;
+
+  document.getElementById("topStatus").innerText =
+    danger ? "● ALARM" : "● NORMAL";
+
+  document.getElementById("topStatus").className =
+    "badge " + (danger ? "badge-red" : "badge-green");
+
+  document.getElementById("dashboardBanner").className =
+    "status-banner " + (danger ? "alarm" : "");
+
+  document.getElementById("dashboardStatus").innerText =
+    danger ? "⚠ Fire Alert" : "🟢 System Normal";
+
+  document.getElementById("dashboardDetail").innerText =
+    danger ? "ระบบตรวจพบความผิดปกติ (จำลอง)" : "ระบบกำลังเฝ้าระวังสถานะจำลอง";
+
+}
+
+/* EVENTS */
+
+function addEvent(message) {
+
+  const time = new Date().toLocaleString("th-TH");
+
+  events.unshift({
+    time: time,
+    message: message
+  });
+
+  renderHistory();
+
+}
+
+function renderHistory() {
+
+  const container = document.getElementById("eventHistory");
+
+  if (events.length === 0) {
+
+    container.innerHTML =
+      '<div class="empty">No event history</div>';
+
+    return;
+
+  }
+
+  container.innerHTML = events.map(event => `
+    <div class="log-item">
+      <div class="log-time">${event.time}</div>
+      <div>${event.message}</div>
+    </div>
+  `).join("");
+
+}
+
+function clearHistory() {
+
+  events = [];
+  renderHistory();
+
+}
+
+function simulateFire() {
+
+  smokeValue = 350;
+  temperature = 85;
+  flameDetected = true;
+  alarmOn = true;
+  suppressionOn = true;
+
+  updateUI();
+
+  addEvent("ตรวจพบเหตุเพลิงไหม้ จำลองการแจ้งเตือนและสั่งงานระบบดับเพลิง");
+
+}
+
+function resetSystem() {
+
+  smokeValue = 20;
+  temperature = 30;
+  flameDetected = false;
+  alarmOn = false;
+  suppressionOn = false;
+
+  updateUI();
+
+  addEvent("Reset ระบบกลับสู่สถานะปกติ");
+
+}
+
+function manualActivate() {
+
+  alarmOn = true;
+  suppressionOn = true;
+
+  updateUI();
+
+  addEvent("ผู้ใช้งานสั่งเปิดระบบด้วยตนเอง (จำลอง)");
+
+}
+
+/* SETTINGS */
+
+function saveSettings() {
+
+  tempThreshold = Number(
+    document.getElementById("tempThreshold").value
+  );
+
+  smokeThreshold = Number(
+    document.getElementById("smokeThreshold").value
+  );
+
+  updateUI();
+
+  addEvent(
+    "ปรับค่า Threshold: Temperature " +
+    tempThreshold + " °C, Smoke " + smokeThreshold
+  );
+
+  alert("บันทึกการตั้งค่าแล้ว");
+
+}
+
+/* INITIALIZE */
+
+updateUI();
+renderHistory();
+
+</script>
+
+</body>
+</html>
